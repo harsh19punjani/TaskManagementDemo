@@ -1,0 +1,286 @@
+<!Doctype html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maru Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="angular.js"></script>
+  <script src="script.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="app" ng-controller="mycntrl">
+  <!--{{myWelcome}} -- {{myWelcome2}} <br />
+  {{myWelcome3}}
+
+  <br />
+
+  <br />-->
+  <!--taskResponse: {{resptaskdata.length}}-->
+  <!--<form name="form1">
+    First Name:<input type="text" placeholder="First Name" /><br/>
+    Last Name:<input type="text" placeholder="Last Name" /><br/>
+    Email:<input type="email" placeholder="Email" /><br/>
+    Phone Number:<input type="number" placeholder="Phone number" /><br/>
+    DOB:<input type="date" placeholder="Date of Birth" /><br/>
+    <input type="submit"  value="Submit"/><br/>
+    <input type="reset" value="Reset" /><br/>
+  </form>-->
+
+
+  <div class="container">
+    <center>  <h2>Task Management</h2></center>
+    <div class="row form-group">
+
+
+                <div class="col-md-6">
+                    <input type="text" name="search" ng-model="search" placeholder="search here.."ng-change="searchapi(search);"  class="form-control" style="width:150px" />
+
+                      <!--<datalist id="browsers" ng-repeat="s in searchvalue">
+                        <option value="{{s.taskName}}" ng-click="searchclick(s);">
+
+                      </datalist>-->
+                    <div ng-if="searchvalue.length>0" class="form-control" style="width:168px;height:auto">
+                     <ul ng-repeat="s in searchvalue" >
+                         <li>
+                            <a href="#" ng-click="searchclick(s)">{{s.taskName}}</a>
+                         </li>
+
+                     </ul>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+<div class="row form-group">
+  <div class="form-group col-md-5">
+    <label class="control-label" >Befor Task End Date:</label>
+     <input type="date" class="form-control"placeholder="Task Start Date"  name="Task Start Date" ng-model="" required>
+
+  </div>
+  <div class="form-group col-md-5">
+    <label class="control-label" >After Task End Date:</label>
+     <input type="date" class="form-control"placeholder="Task Start Date"  name="Task Start Date" ng-model="" required>
+
+  </div>
+
+
+  <div class="form-group col-md-2">
+    <label></label>
+    <button type="button" class="form-control btn btn-info btn-md" ng-click="addtask();">Add Task</button>
+  </div>
+</div>
+
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sr no.</th>
+          <th>Task Name</th>
+          <th>Task Description</th>
+          <th>Task Start Date</th>
+          <th>Task End Date</th>
+            <th>Created By</th>
+            <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-if="resptaskdata.length  !== 0" ng-repeat="item in resptaskdata">
+          <td>{{$index+1}}</td>
+          <td>{{item.taskName}}</td>
+          <td>{{item.taskDescription}}</td>
+          <td>{{item.taskstarttdate | date:  "dd-MM-yyyy"}}</td>
+          <td>{{item.taskdate | date:  "dd-MM-yyyy"}}</td>
+          <td>{{item.taskcreatedby}}</td>
+          <td>
+              <a style="cursor:pointer;" ng-click="edittsk(item);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
+              <a style="cursor:pointer;" ng-click="delete(item);"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></a>
+
+          </td>
+        </tr>
+        <tr>
+          <td ng-if="resptaskdata.length  === 0" colspan="7" class="text-center">No records found!</td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+<!--add Task model-->
+  <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-md">
+       <div class="modal-content">
+         <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Add Task Details:</h4>
+         </div>
+         <div class="modal-body">
+           <!--<form name="taskForm" ng-submit="submitform()">
+             Task Name:<input type="text" placeholder="Task Name" ng-model="taskName"/><br/>
+             Task Description:<input type="text" placeholder="Task Description" ng-model="taskDescription"/><br/>
+             <input type="submit"  value="Submit"/><br/>
+             <input type="reset" value="Reset" /><br/>
+           </form>-->
+
+           <form name="taskForm" ng-submit="submitform()">
+               <div class="form-group">
+                 <label class="control-label" >Task Name:</label>
+                  <input type="text" class="form-control"  placeholder="Enter Task Name" name="Task Name" ng-model="taskName" required>
+
+               </div>
+
+
+               <div class="form-group">
+                 <label class="control-label" >Task Start Date:</label>
+                  <input type="date" class="form-control"placeholder="Task Start Date"  name="Task Start Date" ng-model="taskstdate" required>
+
+               </div>
+
+               <div class="form-group">
+                 <label class="control-label" >Task End Date:</label>
+                  <input type="date" class="form-control"placeholder="Task End Date"  name="Task End Date" ng-model="taskdate" required>
+
+               </div>
+
+
+               <div class="form-group">
+                 <label class="control-label" >Created By:</label>
+                  <input type="text" class="form-control"  placeholder="Created by" name="Created by" ng-model="taskcreatedby" required>
+
+               </div>
+
+               <div class="form-group">
+
+                  <label for="comment">Task Description:</label>
+                  <textarea class="form-control" rows="3" placeholder="Enter Task Description" name="taskDescription" ng-model="taskDescription" required ></textarea>
+
+
+               </div>
+                <input type="submit" class="btn btn-default" value="Submit" ng-click="close();" />
+                 <input type="reset" value="Reset Value" class="btn btn-default">
+
+
+             </form>
+
+
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+     </div>
+   </div>
+
+<!--view task-->
+   <div class="modal fade" id="viwmodel" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Update Task Details:</h4>
+          </div>
+          <div class="modal-body">
+            <!--<form name="taskForm" ng-submit="submitform()">
+              Task Name:<input type="text" placeholder="Task Name" ng-model="taskName"/><br/>
+              Task Description:<input type="text" placeholder="Task Description" ng-model="taskDescription"/><br/>
+              <input type="submit"  value="Submit"/><br/>
+              <input type="reset" value="Reset" /><br/>
+            </form>-->
+
+            <form name="taskForm" ng-submit="Updateform()">
+                <div class="form-group">
+                  <label class="control-label" >Task Name:</label>
+                   <input type="text" class="form-control"  placeholder="Enter Task Name" name="Task Name" ng-model="taskName" required>
+
+                </div>
+                <div class="form-group">
+                  <label class="control-label" >Task Start Date:</label>
+                   <input type="date" class="form-control"placeholder="Task Start Date"  name="Task Start Date" ng-model="taskstdate" required>
+
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label">Task End Date:</label>
+                   <input type="date" class="form-control"placeholder="Task End Date"  name="Task End Date" ng-model="taskdate"  required>
+
+                </div>
+
+
+                <div class="form-group">
+                  <label class="control-label" >Created By:</label>
+                   <input type="text" class="form-control"  placeholder="Created by" name="Created by" ng-model="taskcreatedby" required>
+
+                </div>
+
+                <div class="form-group">
+
+                   <label for="comment">Task Description:</label>
+                   <textarea class="form-control" rows="3" placeholder="Enter Task Description" name="taskDescription" ng-model="taskDescription" required ></textarea>
+
+
+                </div>
+                 <input type="submit" class="btn btn-default" value="Update" ng-click="close();" />
+
+              </form>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!--delete dialog-->
+<div class="modal fade" id="Delete" role="dialog" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-md">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Confirm to delete Task: <b>{{taskname}}</b></h4>
+       </div>
+       <div class="modal-body pull-right">
+         <!--<form name="taskForm" ng-submit="submitform()">
+           Task Name:<input type="text" placeholder="Task Name" ng-model="taskName"/><br/>
+           Task Description:<input type="text" placeholder="Task Description" ng-model="taskDescription"/><br/>
+           <input type="submit"  value="Submit"/><br/>
+           <input type="reset" value="Reset" /><br/>
+         </form>-->
+          <button type="button" class="btn btn-info" ng-click="cnfdelete();" >Ok</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+       </div>
+       <div class="modal-footer">
+
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+
+
+
+
+</div>
+
+
+
+</body>
+</html>
